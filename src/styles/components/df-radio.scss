@@ -1,0 +1,48 @@
+.df-radio{
+  position: relative;
+  padding-left: 32px;
+  padding-top: 2px;
+  cursor: pointer;
+  font-size: calc(var(--df-font-size-base)+ 8px);
+  font-family: var(--df-font-family-base);
+
+    /*Esconde o radio button nativo*/
+  > input {
+    opacity: 0;
+    position: absolute;
+    cursor: pointer;
+  }
+
+  /*criacao do checkmark custom*/
+  >.checkmark {
+    display: inline-block;
+    border-radius: 50%;
+    height: 22px;
+    width: 22px;
+    border: 2px solid var(--df-color-gray-dark);
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  >input:checked ~ .checkmark {
+    background-color: white;
+    border-color: var(--df-color-primary);
+  }
+
+  >.checkmark:after {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: absolute;
+    content: "";
+    top: 3px;
+    left: 3px;
+    background-color: var(--df-color-primary);
+    display: none;
+  }
+
+  >input:checked ~ .checkmark:after {
+    display: block;
+  }
+}
