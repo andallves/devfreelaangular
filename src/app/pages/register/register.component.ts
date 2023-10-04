@@ -1,11 +1,13 @@
+// @ts-nocheck
 import { Component } from '@angular/core';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-// ts-nocheck
+
 export class RegisterComponent {
   checkIfAnyRoleIsChecked() {
     let list = document.getElementsByName("role");
@@ -22,7 +24,11 @@ export class RegisterComponent {
   register() {
     //dados do form
     if (this.checkIfAnyRoleIsChecked() === false) {
-      alert('Selecione uma opção de role');
+      Swal.fire(
+        'Algo de errado...',
+        'Marque algum perfil!',
+        'error'
+      )
       return;
     }
 
@@ -48,10 +54,23 @@ export class RegisterComponent {
     })
       .then(response => response.json())
       .then(response => {
-        alert('Cadastrado com sucesso!');
+        Swal.fire({
+          title: 'Bom Trabalho!',
+          text: 'Cadastrado com sucesso!',
+          icon: 'success',
+          confirmButtonText: 'Ok!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            localStorage.setItem('userName', response.fullName);
+            localStorage.setItem('role', response.role === 'dev' ? 'Desenvolvedor' : 'Cliente');
+            localStorage.setItem('idClient', response.id);
+
+            window.location.href =  'list.html';
+          }
+        })
       })
       .catch(error => {
-
+        throw new Error(error)
       })
 
   }
