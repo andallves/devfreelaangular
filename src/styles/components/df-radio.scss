@@ -1,10 +1,12 @@
-.df-radio{
+.df-radio {
   position: relative;
   padding-left: 32px;
   padding-top: 2px;
   cursor: pointer;
-  font-size: calc(var(--df-font-size-base)+ 8px);
+  display: inline-block;
+  font-size: calc(var(--df-font-size-base) + 8px);
   font-family: var(--df-font-family-base);
+  height: 100%;
 
     /*Esconde o radio button nativo*/
   > input {
@@ -23,23 +25,23 @@
     position: absolute;
     top: 0;
     left: 0;
+
+    &:after {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      position: absolute;
+      content: "";
+      top: 3px;
+      left: 3px;
+      background-color: var(--df-color-primary);
+      display: none;
+    }
   }
 
   >input:checked ~ .checkmark {
     background-color: white;
     border-color: var(--df-color-primary);
-  }
-
-  >.checkmark:after {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    position: absolute;
-    content: "";
-    top: 3px;
-    left: 3px;
-    background-color: var(--df-color-primary);
-    display: none;
   }
 
   >input:checked ~ .checkmark:after {
