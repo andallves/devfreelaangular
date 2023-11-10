@@ -1,6 +1,10 @@
 // @ts-nocheck
-import { Component } from '@angular/core';
-import Swal from 'sweetalert2';
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {message} from "../../shared/utils/message";
+import {Message} from "../../interfaces/Message.interface";
+import {Swal} from 'sweetalert2';
+import {RegisterService} from "../../services/register.service";
 
 @Component({
   selector: 'app-register',
@@ -9,51 +13,28 @@ import Swal from 'sweetalert2';
 })
 
 export class RegisterComponent {
-  checkIfAnyRoleIsChecked() {
-    let list = document.getElementsByName("role");
-    let counter = 0;
+  protected readonly message: Message = message;
 
-    for (let radioButton of list) {
-      if (radioButton.checked === false) {
-        counter++;
-      }
-    }
-    return counter !== list.length;
+  constructor(private fb: FormBuilder, private registerService: RegisterService) {
+  }
+
+  registerForm: FormGroup = this.fb.group({
+    role: ['', [Validators.required]],
+    fullName: ['', [Validators.required]],
+    birthDate: ['', [Validators.required]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]]
+  })
+
+  toogleRole(role: 'dev' | 'client') {
+    this.registerForm.get('role')?.setValue(role);
   }
 
   register() {
-    //dados do form
-    if (this.checkIfAnyRoleIsChecked() === false) {
-      Swal.fire(
-        'Algo de errado...',
-        'Marque algum perfil!',
-        'error'
-      )
-      return;
-    }
+    if (this.registerForm.valid) {
+      let payload = this.registerForm.value;
 
-    let payload = {
-      role: document.getElementsByName("role")[0].checked == true ? 'freelancer' : 'client',
-      fullName: document.querySelector("#fullName").value,
-      birthDate: document.querySelector("#birthDate").value,
-      email: document.querySelector("#email").value,
-      password: document.querySelector("#password").value
-    }
-    console.log(payload)
-
-    //calling api
-
-    fetch("https://localhost:7282/api/users", {
-      method: 'POST',
-      body: JSON.stringify(payload),
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': '*/*',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-      .then(response => response.json())
-      .then(response => {
+      this.registerService.saveUser(payload).subscribe((reponse) => {
         Swal.fire({
           title: 'Bom Trabalho!',
           text: 'Cadastrado com sucesso!',
@@ -65,13 +46,43 @@ export class RegisterComponent {
             localStorage.setItem('role', response.role === 'dev' ? 'Desenvolvedor' : 'Cliente');
             localStorage.setItem('idClient', response.id);
 
-            window.location.href =  'list.html';
+            window.location.href = 'list.html';
           }
         })
+      }, (error) => {
+        console.log(error);
       })
+    } else {
+      this.registerForm.markAllAsTouched();
+    }
+
+    /*
+
+    //calling api
+
+    fetch("https://localhost:7282/api/users", {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: {
+        'Content-Type': 'application/json',
+        'accept': '*!/!*',
+        'Access-Control-Allow-Origin': '*'
+      }
+    })
+      .then(response => response.json())
+      .then(response => {
+
       .catch(error => {
         throw new Error(error)
       })
+*/
+  }
+
+  isValid(inputName: string, validatorName: string): boolean {
+    const formControl: any = this.registerForm.get(inputName);
+    if (formControl.errors !== null) {
+      return formControl.errors[validatorName] && formControl.touched;
+    }
 
   }
 }
