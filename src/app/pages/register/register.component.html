@@ -1,6 +1,12 @@
 <div class="df-register">
   <app-wrapper>
-    <form class="left" (submit)="register()" action="javascript:void(0)">
+    <form class="left" (submit)="register()" [formGroup]="registerForm">
+
+      <mat-form-field>
+        <mat-label>Input</mat-label>
+        <input matInput>
+      </mat-form-field>
+
       <h1 class="main-title">
         <span class="up">Olá!</span>
         <span class="down">Vamos criar seu cadastro.</span>
@@ -11,28 +17,49 @@
         <div class="buttons">
           <label class="df-radio">
             Freelancer
-            <input name="role" type="radio" />
+            <input name="role" type="radio" (click)="toogleRole('dev')"/>
             <span class="checkmark"></span>
           </label>
           <label class="df-radio">
             Cliente
-            <input name="role" type="radio" />
+            <input name="role" type="radio" (click)="toogleRole('client')"/>
             <span class="checkmark"></span>
           </label>
         </div>
+        <span class="role-invalid" *ngIf="isValid('role', 'required')">{{ message.role }}</span>
       </div>
 
-      <input required id="fullName" class="df-input" placeholder="Nome completo" />
-      <input required id="birthDate" type="date" class="df-input" placeholder="Data de nascimento" />
-      <input required id="email" type="email" class="df-input" placeholder="Email" />
-      <input required id="password" type="password" class="df-input" placeholder="Senha" />
+      <mat-form-field appearance="fill">
+        <mat-label>Nome completo</mat-label>
+        <input matInput formControlName="fullName">
+        <mat-error *ngIf="isValid('fullName', 'required')">{{message.required}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Data de nascimento</mat-label>
+        <input type="date" matInput formControlName="birthDate">
+        <mat-error *ngIf="isValid('birthDate', 'required')">{{message.required}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+        <mat-error *ngIf="isValid('email', 'required')">{{message.required}}</mat-error>
+        <mat-error *ngIf="isValid('email', 'email')">{{message.email}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Senha</mat-label>
+        <input type="password" matInput formControlName="password">
+        <mat-error *ngIf="isValid('password', 'required')">{{message.required}}</mat-error>
+      </mat-form-field>
 
       <app-button text="Continuar"></app-button>
     </form>
 
     <div class="right">
       <img class="image" src="assets/image/bg-cubes.png"
-        alt="Fundo de decoração com 3 cubos com fundo gradiente das cores do arco-iris" />
+           alt="Fundo de decoração com 3 cubos com fundo gradiente das cores do arco-iris"/>
     </div>
   </app-wrapper>
 </div>

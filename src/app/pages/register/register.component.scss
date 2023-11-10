@@ -3,22 +3,22 @@
     max-width: 450px;
     margin: auto;
 
-    >.main-title {
+    > .main-title {
       font-weight: 800;
       margin-bottom: 40px;
 
-      >.up {
+      > .up {
         font-size: calc(var(--df-font-size-base) + 38px);
         display: block;
         margin-bottom: 7px;
       }
 
-      >.down {
+      > .down {
         font-size: calc(var(--df-font-size-base) + 22px);
       }
     }
 
-    >.steps {
+    > .steps {
       display: block;
       font-weight: 800;
       font-size: calc(var(--df-font-size-base) + 4px);
@@ -26,19 +26,27 @@
       margin-bottom: 13px;
     }
 
-    >.radio-buttons {
+    > .radio-buttons {
       margin-bottom: 42px;
 
-      >.title {
+      > .title {
         font-size: calc(var(--df-font-size-base) + 8px);
         font-weight: 800;
         margin-bottom: 16px;
       }
 
-      >.buttons {
-        >.df-radio {
+      > .buttons {
+        > .df-radio {
           margin-right: 70px;
         }
+      }
+
+      > .role-invalid {
+        color: red;
+        display: inline-block;
+        margin-top: 15px;
+        font-weight: 400;
+        font-size: 13px;
       }
     }
   }
